@@ -8,7 +8,8 @@ Date: TO VERIFY
 Mode: sequential                 # sequential | parallel (da PROJECT.yaml)
 Last agent: TO VERIFY            # claude | codex, + modello
 Next agent: TO VERIFY            # claude | codex | chiunque
-Active milestone: TO VERIFY
+Active phase: TO VERIFY
+Version: TO VERIFY
 
 ## Passaggio corrente
 

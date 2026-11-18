@@ -7,8 +7,14 @@ project:
   slug: ""
   # chi guida l'app: decide visione, stack, roadmap, priorità
   owner: ""
+  # quanto l'agente deve spiegare: beginner | intermediate | developer
+  owner_experience: beginner
   # idea | prototype | mvp | live
   stage: idea
+  # versione dell'app: 0.x.y fino all'MVP, 1.0.0 all'MVP (RULES.md → Versioni)
+  version: 0.0.0
+  # a chi verrà consegnato l'MVP, se si sa già (sviluppatore, agenzia…)
+  handover_to: ""
   # web | ios | android | desktop | api | cli — anche più di una
   platforms: []
 
@@ -37,7 +43,14 @@ stack:
   hosting: ""
   storage: ""                  # es. cloudflare r2
   ci: ""
+  error_monitoring: ""
   other: []
+
+  # i tre posti dove vive l'app (ROADMAP.md → M1)
+  environments:
+    local: ""                  # es. http://localhost:8787
+    preview: ""                # ambiente di prova
+    production: ""
 
 # ─────────────────────────────────────────────────────────────────────
 # AGENTI — chi lavora nel repo. Regole in RULES.md → "Più agenti".
@@ -80,7 +93,7 @@ agents:
   roles: {}
 
   # revisione incrociata obbligatoria (l'altro agente rivede) per:
-  cross_review: [critical, milestone_close]
+  cross_review: [critical, phase_close]
 
   # tier vietati su questo progetto, es. [premium]
   forbid_tiers: []

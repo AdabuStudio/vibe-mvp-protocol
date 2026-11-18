@@ -1,8 +1,10 @@
 # Vibe MVP Protocol — Rules
 
-Un metodo semplice per sviluppare un'app con uno o più AI coding agent, dall'idea
-fino a un **MVP finito**. La memoria del progetto vive nel repository, non nella
-chat: qualunque agente può riprendere il lavoro leggendo i file di `vibe/`.
+Un metodo per permettere a una persona **che non è sviluppatore** di costruire
+la propria app con AI coding agent, fino a un **MVP pubblicato e pronto da
+consegnare a uno sviluppatore**. La memoria del progetto vive nel repository,
+non nella chat: qualunque agente può riprendere il lavoro leggendo i file di
+`vibe/`.
 
 ## Ruoli
 
@@ -14,6 +16,32 @@ chat: qualunque agente può riprendere il lavoro leggendo i file di `vibe/`.
 
 Le regole valgono identiche per tutti gli agenti: nessuno ha privilegi sugli
 altri, salvo i ruoli che l'owner scrive in `agents.roles`.
+
+## Lavorare con un owner che non è sviluppatore
+
+`PROJECT.yaml` → `project.owner_experience` dice quanto spiegare
+(`beginner` | `intermediate` | `developer`). Con `beginner`, il default:
+
+- **Parla semplice.** Ogni termine tecnico, la prima volta che compare, si
+  spiega in una riga. Il glossario di base è nel `README.md`.
+- **Una decisione alla volta**, con l'opzione consigliata per prima, una
+  alternativa realistica e le conseguenze: costo, tempo, quanto è difficile
+  cambiarla dopo.
+- **Le azioni dell'owner sono passo-passo.** Quando deve fare qualcosa lui
+  (creare un account, cliccare in un pannello, pagare, configurare un dominio),
+  l'agente scrive i passi numerati, cosa deve vedere alla fine e cosa
+  riportare. Mai "configura X" e basta.
+- **Mai secret in chat.** L'agente dice all'owner dove inserire chiavi e
+  password (pannello del servizio, `.env` locale, password manager) e non gli
+  chiede di incollarle nella conversazione.
+- **Ogni "fatto" si può vedere.** A fine task l'agente dice cosa è cambiato a
+  parole e come l'owner lo verifica: un indirizzo da aprire, una schermata, un
+  segno verde su GitHub.
+- **Prima delle cose irreversibili, chiedi.** Pubblicare in produzione,
+  cancellare dati, cambiare la struttura del database di produzione, attivare
+  un piano a pagamento: si spiega cosa succede e si aspetta l'ok esplicito.
+- **Le domande dell'owner non sono interruzioni.** Se chiede "perché?", si
+  risponde prima di proseguire.
 
 Quando queste regole dicono "chiedi", si chiede all'owner.
 
@@ -43,9 +71,11 @@ presi da altri agenti prima di sceglierne uno.
 
 | File | Si legge quando |
 |---|---|
-| `ROADMAP.md` | scegli il prossimo task, chiudi una milestone, o un task sembra fuori dalla milestone attiva |
+| `ROADMAP.md` | scegli il prossimo task, chiudi una fase, o un task sembra fuori dalla fase attiva |
 | `VISION.md` | fai una scelta di prodotto, i requisiti sono ambigui, o aggiungi qualcosa che l'utente vedrà |
 | `IDEAS.md` | stai per annotare un'idea, o l'owner chiede delle idee |
+| `TESTS.md` | scrivi o aggiorni test e collaudi, registri un esito, chiudi una fase |
+| `CONSEGNA.md` | prendi una scorciatoia, tocchi infrastruttura, dati o permessi, chiudi una fase |
 | `DECISIONS.md` | tocchi un'area già decisa o stai per contraddire una decisione (i titoli scorrili sempre) |
 | `START.md` | solo al primo ingresso nel progetto |
 
@@ -76,18 +106,25 @@ VISION  →  ROADMAP (M0 … MVP)  →  TASKS  →  codice
 ```
 
 - `VISION.md` → **perché** esiste l'app e per chi. Cambia raramente.
-- `ROADMAP.md` → **in che ordine** si arriva all'MVP: milestone con un criterio
-  di uscita verificabile. L'ultima è sempre **MVP**.
-- `TASKS.md` → **cosa si fa adesso**. Ogni task serve una milestone.
+- `ROADMAP.md` → **il percorso** fino all'MVP. È già scritto con le fasi che ogni
+  app attraversa — idea e cantiere, infrastruttura, dati, utenti e permessi,
+  funzione chiave, qualità e sicurezza, pubblicazione e consegna — e per
+  ognuna dice cosa decide l'owner, cosa fa l'agente e cosa verifica l'owner.
+  L'ultima fase è sempre **MVP**.
+- `TASKS.md` → **cosa si fa adesso**. Ogni task serve una fase.
 - `IDEAS.md` → il **parcheggio** di tutto ciò che non è ancora deciso.
 
 Regole:
 
-- Una sola milestone `active` alla volta.
-- Un task che non serve la milestone attiva non va in `NOW`.
-- Visione e roadmap le cambia l'owner: l'agente propone, e scrive solo dopo l'ok.
-- Una milestone si chiude quando il criterio di uscita è **verificato**, non
-  quando i task sono spuntati.
+- Una sola fase `active` alla volta, nell'ordine della roadmap.
+- Un task che non serve la fase attiva non va in `NOW`.
+- Visione e roadmap le cambia l'owner: l'agente propone (dividere una fase,
+  saltarne una che non serve), e scrive solo dopo l'ok.
+- Una fase si chiude quando tutte le sue caselle sono spuntate **e verificate**,
+  compresi i collaudi dell'owner. Non basta che i task siano chiusi.
+- Alla chiusura di una fase l'agente: aggiorna versione e `CHANGELOG.md`,
+  aggiorna `CONSEGNA.md` e `STATE.md`, segna la fase `done` con data e
+  versione, e chiede all'owner l'ok per attivare la successiva.
 - **L'MVP è il traguardo.** Tutto ciò che non serve all'MVP aspetta: va in
   `IDEAS.md` o in *Dopo l'MVP* della roadmap.
 
@@ -129,9 +166,75 @@ controllo e l'MVP arriva.
 - Niente force push, niente reset distruttivi, niente modifiche dell'utente scartate.
 - Modifiche piccole, verificabili e reversibili.
 
+## Versioni
+
+L'app ha una versione fin dal primo giorno, così si sa sempre cosa è
+pubblicato e si può tornare indietro.
+
+- Formato `MAGGIORE.MINORE.CORREZIONE`. Fino all'MVP la versione è `0.x.y`;
+  l'MVP è `1.0.0`.
+- Chiusura di una fase → la versione indicata in `ROADMAP.md` (`0.1.0`, `0.2.0`…).
+- Correzione di un errore tra una fase e l'altra → si alza l'ultimo numero
+  (`0.3.0` → `0.3.1`).
+- La versione sta in `PROJECT.yaml` → `project.version` e nel file di
+  configurazione dell'app (es. `package.json`): devono coincidere.
+- **`CHANGELOG.md`** alla radice del repo, scritto per l'owner, non per
+  sviluppatori: cosa cambia per chi usa l'app. La sezione *Non ancora
+  pubblicato* si aggiorna a ogni task utile; alla nuova versione prende numero
+  e data.
+
+```markdown
+## [0.4.0] - 2026-03-12
+### Aggiunto
+- Accesso con email e password, con recupero della password.
+### Corretto
+- La lista prenotazioni ora si vede anche da telefono.
+```
+
+- A ogni versione si crea un **tag** Git `vX.Y.Z`, dopo l'ok dell'owner sulla
+  chiusura della fase. Il tag è il punto a cui si può tornare: se una versione
+  pubblicata ha un problema grave, si ripubblica il tag precedente.
+- Messaggi di commit: `tipo(T-NNN): descrizione`, con `tipo` tra `feat`
+  (funzione nuova), `fix` (correzione), `test`, `docs`, `chore` (manutenzione).
+
+## Test e collaudi
+
+Due livelli, entrambi in `TESTS.md`:
+
+- **Test automatici** — li scrive l'agente, insieme al codice, non dopo.
+  - Ogni funzione nuova ha almeno un test; ogni riga della tabella dei permessi
+    ha il suo test; ogni errore corretto ha un test che lo avrebbe trovato.
+  - Girano su GitHub a ogni modifica (CI). **Un task non è fatto se i test non
+    passano.**
+  - L'owner non deve leggerli: l'agente gli dice se sono verdi e dove vederlo.
+- **Collaudi** — li fa l'owner, a mano.
+  - L'agente li scrive in `TESTS.md` in parole semplici, uno per ogni cosa che
+    l'owner deve verificare nella fase (la sezione *Verifichi tu* di
+    `ROADMAP.md`), e indica su quale ambiente farli.
+  - L'esito lo dice l'owner; la riga la può scrivere l'agente.
+  - Un collaudo `ko` diventa un task di correzione collegato (`Correggere
+    C-007`). Dopo la correzione si ripete.
+  - Una fase si chiude solo con tutti i suoi collaudi `ok` sulla versione che
+    si sta chiudendo.
+
+## Debito tecnico e consegna
+
+L'obiettivo finale è un MVP che uno **sviluppatore** possa prendere in mano.
+Per questo `CONSEGNA.md` si scrive durante il lavoro, non alla fine.
+
+- Per arrivare all'MVP si prendono scorciatoie: sono lecite, ma ognuna va
+  scritta subito in `CONSEGNA.md` → *Debito tecnico*, con rischio e come si
+  sistemerebbe. Una scorciatoia non scritta è un difetto nascosto.
+- Sulle aree critiche — accesso, permessi, pagamenti, dati personali —
+  scorciatoie non se ne prendono.
+- Ogni fase aggiorna le sezioni di `CONSEGNA.md` che la riguardano (ambienti,
+  servizi, modello dati, permessi, sicurezza).
+- `CONSEGNA.md` non contiene mai secret: solo nomi delle variabili e dove si
+  trovano i valori.
+
 ## Task
 
-- Ogni task ha un ID stabile (`T-001`, mai riusato) e la milestone che serve.
+- Ogni task ha un ID stabile (`T-001`, mai riusato) e la fase che serve.
 - I task in `NOW` sono **bounded**: hanno un `Done when:` verificabile senza
   intervento umano (test che passa, build pulita, schermata che si apre,
   endpoint che risponde).
@@ -150,12 +253,17 @@ controllo e l'MVP arriva.
 
 Prima di chiudere una sessione significativa:
 
-1. verificare il lavoro, eseguire test/build pertinenti;
+1. verificare il lavoro, eseguire test e build: devono passare;
 2. committare;
-3. aggiornare `STATE.md` e `TASKS.md`;
-4. aggiornare `ROADMAP.md` se una milestone ha cambiato stato;
-5. aggiornare `DECISIONS.md` e `IDEAS.md` se serve;
-6. riscrivere `HANDOFF.md`.
+3. aggiornare `STATE.md`, `TASKS.md` e la sezione *Non ancora pubblicato* di
+   `CHANGELOG.md`;
+4. aggiornare `ROADMAP.md` (caselle spuntate, fase chiusa) e `TESTS.md` (nuovi
+   collaudi da fare);
+5. aggiornare `CONSEGNA.md` se hai preso scorciatoie o toccato infrastruttura,
+   dati o permessi; `DECISIONS.md` e `IDEAS.md` se serve;
+6. riscrivere `HANDOFF.md`;
+7. dire all'owner, in parole semplici: cosa è cambiato, come vederlo, e quali
+   collaudi lo aspettano.
 
 ## Handoff
 
@@ -275,7 +383,7 @@ git worktree add ../<repo>-codex -b codex/T-014-login
 Due fornitori diversi vedono errori diversi: è il vantaggio di avere sia
 Claude che Codex. Per i casi in `agents.cross_review` — di default task
 `CRITICAL` (auth, permessi, pagamenti, dati, migrazioni distruttive, produzione)
-e chiusura di milestone — il lavoro di un agente lo **rivede l'altro** prima del
+e chiusura di una fase — il lavoro di un agente lo **rivede l'altro** prima del
 merge.
 
 - Chi chiede la revisione lo scrive in `HANDOFF.md` → *Revisione richiesta*:

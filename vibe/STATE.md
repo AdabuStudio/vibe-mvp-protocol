@@ -5,7 +5,8 @@ Last verified commit: TO VERIFY
 Last agent: primo avvio da fare (vibe/START.md)
 
 Stage: TO VERIFY              # idea | prototype | mvp | live
-Active milestone: TO VERIFY    # da ROADMAP.md
+Version: 0.0.0                 # = PROJECT.yaml → project.version
+Active phase: TO VERIFY        # da ROADMAP.md
 
 ## Summary
 

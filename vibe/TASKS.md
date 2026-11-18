@@ -2,7 +2,7 @@
 
 > Lavoro interno concreto. Ogni task ha:
 > - un ID stabile `T-NNN`, progressivo e mai riusato;
-> - la milestone che serve, tra parentesi quadre (`[M1]`);
+> - la fase che serve, tra parentesi quadre (`[M1]`);
 > - in `NOW`, un criterio di completamento verificabile (`Done when:`);
 > - quando un agente lo prende: `@claude` o `@codex` e il branch.
 >
@@ -10,7 +10,7 @@
 > Un task significativo può portare anche `Complexity:` e `Tier:`
 > (vedi `RULES.md` → *Scelta del modello*). Non serve sui micro-task.
 >
-> Un task che non serve la milestone attiva non va in `NOW`.
+> Un task che non serve la fase attiva non va in `NOW`.
 > Un'idea non ancora decisa non è un task: va in `IDEAS.md`.
 
 Formato:
@@ -32,9 +32,9 @@ Prossimo ID libero: T-004
 
 ## NOW
 
-- [ ] T-001 [M0] Definire l'idea con l'owner — Done when: `VISION.md` ha `Status: confirmed`.
-- [ ] T-002 [M0] Far decidere lo stack all'owner — Done when: `PROJECT.yaml` → `stack` compilato e voce in `DECISIONS.md`.
-- [ ] T-003 [M0] Proporre milestone M1…MVP — Done when: l'owner ha approvato `ROADMAP.md`.
+- [ ] T-001 [M0] Onboarding con l'owner (`START.md`) — Done when: `VISION.md` ha `Status: confirmed`.
+- [ ] T-002 [M0] Confermare gli strumenti con l'owner — Done when: `PROJECT.yaml` → `stack` compilato e voce in `DECISIONS.md`.
+- [ ] T-003 [M0] Confermare il percorso (fasi da saltare o dividere) — Done when: l'owner ha approvato `ROADMAP.md`.
 
 ## NEXT
 
