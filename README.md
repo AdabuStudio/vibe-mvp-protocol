@@ -68,7 +68,7 @@ servizi non dichiarati.
 **Nuova app** — parti da una copia di questo repo:
 
 ```bash
-git clone <url-di-questo-repo> mia-app
+git clone https://github.com/FabitusWeb/vibe-mvp-protocol.git mia-app
 ```
 
 ```bash
