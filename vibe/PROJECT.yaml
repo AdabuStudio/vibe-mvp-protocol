@@ -1,0 +1,89 @@
+protocol:
+  name: vibe-mvp
+  version: 1
+
+project:
+  name: ""
+  slug: ""
+  # chi guida l'app: decide visione, stack, roadmap, priorità
+  owner: ""
+  # idea | prototype | mvp | live
+  stage: idea
+  # web | ios | android | desktop | api | cli — anche più di una
+  platforms: []
+
+repository:
+  main_branch: main
+  remote: ""               # es. github.com/<utente>/<repo>
+
+# ─────────────────────────────────────────────────────────────────────
+# STACK — lo decide l'owner. Campo vuoto = non ancora deciso:
+# l'agente chiede prima di usarlo, e non aggiunge servizi non elencati.
+# ─────────────────────────────────────────────────────────────────────
+stack:
+  # preferenze di partenza: l'agente le può proporre, non darle per scelte
+  preferred:
+    repo: github
+    hosting: cloudflare        # Workers / Pages
+    database: neon             # Postgres serverless
+    ci: github-actions
+
+  # scelte confermate dall'owner (registrarle anche in DECISIONS.md)
+  language: ""                 # es. typescript
+  frontend: ""                 # es. react, astro, nessuno
+  backend: ""                  # es. cloudflare workers + hono
+  database: ""                 # es. neon postgres + drizzle
+  auth: ""
+  hosting: ""
+  storage: ""                  # es. cloudflare r2
+  ci: ""
+  other: []
+
+# ─────────────────────────────────────────────────────────────────────
+# AGENTI — chi lavora nel repo. Regole in RULES.md → "Più agenti".
+#
+# mode:
+#   sequential → un agente alla volta, il testimone passa con HANDOFF.md
+#   parallel   → più agenti insieme, ognuno sul suo task e sul suo branch
+#
+# I modelli sono l'UNICO posto del protocollo con nomi di modelli: quando
+# cambiano si aggiornano qui. Usa solo modelli a cui l'account ha davvero
+# accesso; un campo vuoto = tier non disponibile per quell'agente.
+# ─────────────────────────────────────────────────────────────────────
+agents:
+  mode: sequential
+  # chi integra i branch degli agenti su main: owner | <nome agente>
+  integrator: owner
+
+  roster:
+    claude:
+      tool: Claude Code
+      entry: CLAUDE.md
+      branch_prefix: claude/
+      models:
+        economic: haiku
+        base: sonnet
+        premium: opus
+    codex:
+      tool: Codex
+      entry: AGENTS.md
+      branch_prefix: codex/
+      models:
+        economic: ""
+        base: ""
+        premium: ""
+
+  # opzionale: preferenze di ruolo decise dall'owner, es.
+  #   claude: "implementazione"
+  #   codex: "revisione e test"
+  # vuoto = ogni agente fa qualsiasi task
+  roles: {}
+
+  # revisione incrociata obbligatoria (l'altro agente rivede) per:
+  cross_review: [critical, milestone_close]
+
+  # tier vietati su questo progetto, es. [premium]
+  forbid_tiers: []
+
+  worked_so_far: []
+  constraints: []
