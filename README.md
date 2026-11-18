@@ -9,28 +9,127 @@ Il protocollo è un insieme di file nella cartella `vibe/` del tuo progetto.
 Gli agenti AI li leggono a ogni sessione: così ricordano cosa è stato fatto,
 cosa hai deciso e cosa manca, anche se cambi agente o ricominci il giorno dopo.
 
-## Onboarding in 3 passi
+## Prima di iniziare
 
-1. **Crea il progetto** partendo da questo modello:
+Ti servono tre cose: **git**, **almeno un agente** tra Claude Code e Codex, e
+l'account per usarlo. Si fa una volta sola. Se un comando dà errore, copia il
+messaggio e chiedi aiuto: è normale la prima volta.
 
-   ```bash
-   git clone https://github.com/AdabuStudio/vibe-mvp-protocol.git mia-app
+I comandi si scrivono nel **terminale**: su Mac è l'app *Terminale*, su
+Windows *PowerShell*, su Linux *Terminale*.
+
+### 1. git
+
+Controlla se ce l'hai già:
+
+```bash
+git --version
+```
+
+Se risponde con un numero di versione, sei a posto. Altrimenti:
+
+- **Mac** → esegui `xcode-select --install` e conferma la finestra che si apre;
+- **Windows** → scarica e installa da [git-scm.com](https://git-scm.com/downloads),
+  lasciando le opzioni predefinite;
+- **Linux** → `sudo apt install git` (o il gestore della tua distribuzione).
+
+Poi, una volta sola, digli chi sei (servono a firmare i salvataggi del progetto):
+
+```bash
+git config --global user.name "Nome Cognome"
+```
+
+```bash
+git config --global user.email "tua@email.it"
+```
+
+### 2. L'agente
+
+Puoi installarne uno o tutti e due.
+
+**Claude Code** — serve un abbonamento Claude (Pro o Max) o un account Claude
+Console.
+
+- Mac e Linux:
+
+  ```bash
+  curl -fsSL https://claude.ai/install.sh | bash
+  ```
+
+- Windows (PowerShell):
+
+  ```powershell
+  irm https://claude.ai/install.ps1 | iex
+  ```
+
+Se non vuoi usare il terminale, Claude Code c'è anche nell'app desktop di
+Claude, nella scheda **Code**.
+
+**Codex** — serve un abbonamento ChatGPT che includa Codex, o una chiave API
+OpenAI.
+
+- Mac e Linux:
+
+  ```bash
+  curl -fsSL https://chatgpt.com/codex/install.sh | sh
+  ```
+
+- Windows (PowerShell):
+
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
+  ```
+
+### 3. Accedi
+
+Chiudi e riapri il terminale, poi avvia l'agente una prima volta con `claude`
+oppure `codex`: ti chiede di accedere con il tuo account dal browser.
+
+Un account **GitHub** non serve per partire: lo crei nella prima tappa, con le
+istruzioni dell'agente.
+
+## Partire
+
+1. Crea una **cartella vuota** per la tua app, ad esempio `mia-app`.
+2. Apri **Claude Code o Codex in quella cartella**: dal terminale entra nella
+   cartella (`cd mia-app`) e scrivi `claude` o `codex`; nell'app desktop scegli
+   la cartella come progetto.
+3. **Incolla questo messaggio** all'agente:
+
+   ```text
+   Voglio creare la mia app con il Vibe MVP Protocol.
+   Scarica in questa cartella il protocollo da
+   https://github.com/AdabuStudio/vibe-mvp-protocol, senza la sua storia git,
+   e crea un repository git nuovo. Se la cartella non è vuota, fermati e chiedimi.
+   Poi leggi vibe/START.md ed eseguilo.
    ```
 
-   ```bash
-   cd mia-app && rm -rf .git && git init
-   ```
+Se l'agente ti chiede il permesso di eseguire un comando o di accedere a
+internet per scaricare il protocollo, approva.
 
-2. **Apri Claude Code o Codex** nella cartella `mia-app`.
-3. **Scrivi:**
+L'agente scarica il protocollo, ti spiega il percorso e ti fa una decina di
+domande semplici, ognuna con una risposta consigliata. In 10-15 minuti sei
+pronto per la prima tappa.
 
-   > Leggi `vibe/START.md` ed eseguilo.
+**Preferisci il terminale?** Lo stesso risultato, a mano:
 
-L'agente ti spiega il percorso e ti fa una decina di domande semplici, ognuna
-con una risposta consigliata. In 10-15 minuti sei pronto per la prima tappa.
+```bash
+git clone --depth 1 https://github.com/AdabuStudio/vibe-mvp-protocol.git mia-app && cd mia-app && rm -rf .git && git init
+```
 
-Hai già un progetto? Copia dentro la cartella `vibe/`, `AGENTS.md` e
-`CLAUDE.md`, poi fai il passo 3: l'agente ricostruisce lo stato dal codice.
+Poi apri l'agente nella cartella e scrivi: *Leggi `vibe/START.md` ed eseguilo.*
+
+**Hai già un progetto?** Apri l'agente nella cartella del progetto e incolla:
+
+```text
+Voglio usare il Vibe MVP Protocol in questo progetto.
+Scarica da https://github.com/AdabuStudio/vibe-mvp-protocol solo la cartella
+vibe/ e i file AGENTS.md e CLAUDE.md. Se AGENTS.md o CLAUDE.md esistono già,
+non sovrascriverli: aggiungi in cima l'entrypoint del protocollo.
+Non toccare il resto del progetto. Poi leggi vibe/START.md ed eseguilo.
+```
+
+L'agente ricostruisce lo stato del progetto dal codice prima di farti domande.
 
 ## Il percorso
 
